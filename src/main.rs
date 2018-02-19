@@ -25,9 +25,8 @@ fn main() {
              .takes_value(true)
              .help("Use a specific .env file (defaults to .env)"))
         .arg(Arg::with_name("command")
+             .multiple(true)
              .required(true))
-        .arg(Arg::with_name("args")
-             .multiple(true))
         .get_matches();
 
     match matches.value_of("file") {
@@ -35,16 +34,12 @@ fn main() {
         Some(file) => dotenv::from_filename(file),
     }.ok();
 
-    let mut command = Command::new(matches.value_of("command").unwrap());
+    let mut argv = matches.values_of("command").unwrap();
+    let mut command = Command::new(argv.next().unwrap());
 
-    match matches.values_of("args") {
-        Some(command_args) => {
-            for argument in command_args {
-                command.arg(argument);
-            }
-        },
-        None => {},
-    };
+    for argument in argv {
+        command.arg(argument);
+    }
 
     let error = command.exec();
     die!(error);
