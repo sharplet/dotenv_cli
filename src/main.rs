@@ -26,7 +26,8 @@ fn main() {
              .help("Use a specific .env file (defaults to .env)"))
         .arg(Arg::with_name("command")
              .required(true))
-        .arg(Arg::with_name("args..."))
+        .arg(Arg::with_name("args")
+             .multiple(true))
         .get_matches();
 
     match matches.value_of("file") {
