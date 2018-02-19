@@ -19,6 +19,7 @@ fn main() {
         .about("Run a command using the environment in a .env file")
         .setting(AppSettings::ArgRequiredElseHelp)
         .setting(AppSettings::TrailingVarArg)
+        .setting(AppSettings::UnifiedHelpMessage)
         .arg(Arg::with_name("file")
              .short("f")
              .long("file")
@@ -26,7 +27,8 @@ fn main() {
              .help("Use a specific .env file (defaults to .env)"))
         .arg(Arg::with_name("command")
              .multiple(true)
-             .required(true))
+             .required(true)
+             .help("The command to run"))
         .get_matches();
 
     match matches.value_of("file") {
